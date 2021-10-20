@@ -94,6 +94,12 @@ h1 {
   top: 2rem;
   left: 2rem;
 }
+.again1 {
+  text-decoration: none;
+  position: absolute;
+  top: 2rem;
+  left: 25rem;
+}
 
 .guess {
   background: none;
