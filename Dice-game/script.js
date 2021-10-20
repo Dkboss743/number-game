@@ -16,36 +16,41 @@ const btnNew = document.querySelector(".btn--new");
 const btnRoll = document.querySelector(".btn--roll");
 const btnHold = document.querySelector(".btn--hold");
 let activePlayer = 0;
-let activePlay = function (value) {
-  if (value === 0) {
-    document.querySelector(`.player--0`).classList.add("player--active");
-    document.querySelector(`.player--1`).classList.remove("player--active");
-  } else {
-    document.querySelector(`.player--1`).classList.add("player--active");
-    document.querySelector(`.player--0`).classList.remove("player--active");
-  }
+const activePlay = function (value) {
+  currentPlayer0.classList.toggle("player--active");
+  currentPlayer1.classList.toggle("player--active");
 };
+
+const scoreText = (activePlayer, textContent) => {
+  document.getElementById(`current--${activePlayer}`).textContent = textContent;
+};
+
+const setScore = (activePlayer, score) => {
+  document.getElementById(`score--${activePlayer}`).textContent = score;
+};
+
 btnRoll.addEventListener("click", function () {
   const dice = Math.trunc(Math.random() * 6) + 1;
   dicel.classList.remove("hidden");
   dicel.src = `resources/dice-${dice}.png`;
   if (dice !== 1) {
-    activePlay(activePlayer);
-    currentScore = score[Number(`${activePlayer}`)];
     currentScore += dice;
-    document.getElementById(`current--${activePlayer}`).textContent =
-      currentScore;
-    score[Number(`${activePlayer}`)] = currentScore;
+    scoreText(activePlayer, currentScore);
   } else {
     currentScore = 0;
-    document.getElementById(`current--${activePlayer}`).textContent =
-      currentScore;
-    score[Number(`${activePlayer}`)] = currentScore;
+    scoreText(activePlayer, currentScore);
+    score[activePlayer] = 0;
+    setScore(activePlayer, 0);
     activePlayer = activePlayer === 0 ? 1 : 0;
     activePlay(activePlayer);
   }
 });
+
 btnHold.addEventListener("click", function () {
+  score[activePlayer] += currentScore;
+  currentScore = 0;
+  setScore(activePlayer, score[activePlayer]);
   activePlayer = activePlayer === 0 ? 1 : 0;
   activePlay(activePlayer);
+  scoreText(activePlayer, 0);
 });
